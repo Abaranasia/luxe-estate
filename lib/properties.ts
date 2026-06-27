@@ -2,6 +2,24 @@ import { supabase } from "./supabase";
 import { Property, PropertyRow, toProperty } from "@/types/property";
 
 /**
+ * Fetch a single property by its slug.
+ */
+export async function getPropertyBySlug(slug: string): Promise<Property | null> {
+  const { data, error } = await supabase
+    .from("properties")
+    .select("*")
+    .eq("slug", slug)
+    .single();
+
+  if (error || !data) {
+    console.error("Error fetching property by slug:", error);
+    return null;
+  }
+
+  return toProperty(data as PropertyRow);
+}
+
+/**
  * Fetch all featured properties from Supabase.
  */
 export async function getFeaturedProperties(): Promise<Property[]> {

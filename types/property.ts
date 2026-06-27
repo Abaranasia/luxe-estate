@@ -8,10 +8,13 @@ export interface Property {
   area: number; // in square meters (m²)
   type: 'house' | 'apartment' | 'villa' | 'penthouse';
   status: 'sale' | 'rent';
-  imageUrl: string;
+  slug: string;
+  images: string[];
   isExclusive?: boolean;
   isNewArrival?: boolean;
   featured?: boolean; // True if it should be displayed in the Featured Collections section
+  lat?: number;
+  lng?: number;
 }
 
 /** Row shape returned by Supabase (snake_case columns) */
@@ -25,10 +28,13 @@ export interface PropertyRow {
   area: number;
   type: 'house' | 'apartment' | 'villa' | 'penthouse';
   status: 'sale' | 'rent';
-  image_url: string;
+  slug: string;
+  images: string[];
   is_exclusive: boolean;
   is_new_arrival: boolean;
   featured: boolean;
+  lat?: number;
+  lng?: number;
   created_at: string;
 }
 
@@ -44,9 +50,12 @@ export function toProperty(row: PropertyRow): Property {
     area: row.area,
     type: row.type,
     status: row.status,
-    imageUrl: row.image_url,
+    slug: row.slug,
+    images: row.images,
     isExclusive: row.is_exclusive || undefined,
     isNewArrival: row.is_new_arrival || undefined,
     featured: row.featured || undefined,
+    lat: row.lat,
+    lng: row.lng,
   };
 }
