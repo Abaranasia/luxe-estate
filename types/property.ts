@@ -29,7 +29,6 @@ export interface PropertyRow {
   type: 'house' | 'apartment' | 'villa' | 'penthouse';
   status: 'sale' | 'rent';
   slug: string;
-  image_url: string;
   images: string[];
   is_exclusive: boolean;
   is_new_arrival: boolean;
@@ -52,7 +51,7 @@ export function toProperty(row: PropertyRow): Property {
     type: row.type,
     status: row.status,
     slug: row.slug,
-    images: row.images?.length ? row.images : [row.image_url],
+    images: row.images,
     isExclusive: row.is_exclusive || undefined,
     isNewArrival: row.is_new_arrival || undefined,
     featured: row.featured || undefined,

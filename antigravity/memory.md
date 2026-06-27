@@ -48,6 +48,7 @@ Build a premium, minimalist real estate app using **Next.js 16 (App Router)**, *
   - `getFeaturedProperties()` → `Property[]`
   - `getMarketProperties(options)` → paginated, filtered `Property[]`
 - **Mock Data** (`__tests__/mock_data/properties.ts`): 18 properties (3 featured, 15 market) with coordinates.
+- **Cleanup**: Removed redundant `image_url` field from `PropertyRow`. `toProperty()` now uses `row.images` directly (all properties have images populated).
 
 #### 5. Database Migrations (`supabase/migrations/`)
 | File | Purpose |
