@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { Property } from "@/types/property";
 
 interface FeaturedCardProps {
@@ -13,6 +14,7 @@ export default function FeaturedCard({
   isFavorite,
   onToggleFavorite,
 }: FeaturedCardProps) {
+  const router = useRouter();
   const {
     title,
     location,
@@ -21,9 +23,10 @@ export default function FeaturedCard({
     baths,
     area,
     status,
-    imageUrl,
+    images,
     isExclusive,
     isNewArrival,
+    slug,
   } = property;
 
   const formattedPrice = new Intl.NumberFormat("en-US", {
@@ -34,13 +37,18 @@ export default function FeaturedCard({
 
   const formattedArea = new Intl.NumberFormat("en-US").format(area);
 
+  const primaryImage = images?.[0] || "/placeholder.jpg";
+
   return (
-    <div className="group relative rounded-xl overflow-hidden shadow-soft bg-white cursor-pointer flex flex-col h-full">
+    <div
+      onClick={() => router.push(`/properties/${slug}`)}
+      className="group relative rounded-xl overflow-hidden shadow-soft bg-white cursor-pointer flex flex-col h-full"
+    >
       <div className="aspect-[4/3] w-full overflow-hidden relative">
         <img
           alt={title}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-          src={imageUrl}
+          src={primaryImage}
         />
         
         {/* Badges */}

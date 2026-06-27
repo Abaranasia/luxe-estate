@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { Property } from "@/types/property";
 
 interface PropertyCardProps {
@@ -13,6 +14,7 @@ export default function PropertyCard({
   isFavorite,
   onToggleFavorite,
 }: PropertyCardProps) {
+  const router = useRouter();
   const {
     title,
     location,
@@ -21,7 +23,8 @@ export default function PropertyCard({
     baths,
     area,
     status,
-    imageUrl,
+    images,
+    slug,
   } = property;
 
   const formattedPrice = new Intl.NumberFormat("en-US", {
@@ -30,13 +33,18 @@ export default function PropertyCard({
     maximumFractionDigits: 0,
   }).format(price);
 
+  const primaryImage = images?.[0] || "/placeholder.jpg";
+
   return (
-    <article className="bg-white rounded-xl overflow-hidden shadow-card hover:shadow-soft transition-all duration-300 group cursor-pointer h-full flex flex-col">
+    <article
+      onClick={() => router.push(`/properties/${slug}`)}
+      className="bg-white rounded-xl overflow-hidden shadow-card hover:shadow-soft transition-all duration-300 group cursor-pointer h-full flex flex-col"
+    >
       <div className="relative aspect-[4/3] overflow-hidden">
         <img
           alt={title}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-          src={imageUrl}
+          src={primaryImage}
         />
         
         {/* Favorite Button */}

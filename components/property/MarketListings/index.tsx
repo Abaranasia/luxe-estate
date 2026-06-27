@@ -33,6 +33,7 @@ export default function MarketListings() {
         setIsLoadingMore(true);
       } else {
         setIsLoading(true);
+        setPage(0);
       }
 
       const result = await getMarketProperties({
@@ -57,7 +58,7 @@ export default function MarketListings() {
 
   // Reset to page 0 when filters change
   useEffect(() => {
-    setPage(0);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchProperties(0, false);
   }, [fetchProperties]);
 
