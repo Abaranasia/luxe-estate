@@ -3,6 +3,7 @@ import Navbar from "@/components/layout/Navbar";
 import { getPropertyBySlug } from "@/lib/properties";
 import { notFound } from "next/navigation";
 import { PropertyGallery } from "./PropertyGallery";
+import PropertyMap from "@/components/property/PropertyMap";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -228,26 +229,20 @@ export default async function PropertyDetailPage({ params }: Props) {
               </div>
 
               {/* Map */}
-              <div className="bg-white p-2 rounded-xl shadow-sm border border-nordic-dark/5">
-                <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden bg-slate-100">
-                  <img
-                    alt="Map location"
-                    className="w-full h-full object-cover opacity-80"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAam7l6Iva-Ueed4N1BxrVb5SqFJUVl9pnGf_zDG5JYhZmJCe3hLYttkVA-Jg46VljNevhZK7LCxoMpRmKjS0pT1uk0x_WAT5FFVpphw6yGYjroXFGybUkSYCymind4Z7fzrdob5j_VR4DfhQL6Lej-gMQZCuLjZrOjYt0KN97oLy0gZVOIyV1o7woH1F8aOvLzpKUPzcof0KmZdYl7I1uq25G31zdQYTwnQCXvWAQ0Snu1uEKYLQZg4uV4OsqzeOtSu_KCt36ytmw"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="w-8 h-8 bg-mosque rounded-full border-4 border-white shadow-lg animate-bounce flex items-center justify-center">
-                      <span className="material-icons text-white text-sm">home</span>
-                    </div>
+              {property.lat !== undefined && property.lng !== undefined ? (
+                <PropertyMap
+                  lat={property.lat}
+                  lng={property.lng}
+                  title={property.title}
+                  location={property.location}
+                />
+              ) : (
+                <div className="bg-white p-2 rounded-xl shadow-sm border border-nordic-dark/5">
+                  <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden bg-slate-100 flex items-center justify-center">
+                    <p className="text-nordic-muted text-sm">Map location unavailable</p>
                   </div>
-                  <a
-                    href="#"
-                    className="absolute bottom-2 right-2 bg-white/90 text-xs font-medium px-2 py-1 rounded shadow-sm text-nordic-dark hover:text-mosque"
-                  >
-                    View on Map
-                  </a>
                 </div>
-              </div>
+              )}
             </div>
           </aside>
         </div>
