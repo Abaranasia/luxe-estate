@@ -116,6 +116,8 @@ Build a premium, minimalist real estate app using **Next.js 16 (App Router)**, *
 | Loading & error states for property detail | TODO — `loading.tsx` and `error.tsx` not yet created |
 | Search filters synced to URL params | TODO |
 | Agent detail / schedule viewing flow | TODO |
+| Keep memory.md updated with progress | IN_PROGRESS — this file |
+| Skills reference guide | DONE — `antigravity/skills.md` created |
 
 ---
 
