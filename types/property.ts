@@ -15,6 +15,7 @@ export interface Property {
   featured?: boolean; // True if it should be displayed in the Featured Collections section
   lat?: number;
   lng?: number;
+  amenities?: string[];
 }
 
 /** Row shape returned by Supabase (snake_case columns) */
@@ -35,6 +36,7 @@ export interface PropertyRow {
   featured: boolean;
   lat?: number;
   lng?: number;
+  amenities?: string[];
   created_at: string;
 }
 
@@ -57,5 +59,6 @@ export function toProperty(row: PropertyRow): Property {
     featured: row.featured || undefined,
     lat: row.lat,
     lng: row.lng,
+    amenities: row.amenities,
   };
 }
