@@ -1,7 +1,6 @@
 "use client";
 
 import Navbar from "@/components/layout/Navbar";
-import FeaturedCollections from "@/components/property/FeaturedCollections";
 import MarketListings from "@/components/property/MarketListings";
 
 export default function Home() {
@@ -10,7 +9,6 @@ export default function Home() {
       <Navbar />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 w-full flex-grow">
-        <FeaturedCollections />
         <MarketListings />
       </main>
     </div>

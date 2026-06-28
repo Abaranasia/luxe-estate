@@ -43,6 +43,12 @@ export interface MarketPropertiesOptions {
   type?: string;
   status?: string;
   search?: string;
+  location?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  beds?: number;
+  baths?: number;
+  amenities?: string[];
 }
 
 export interface MarketPropertiesResult {
@@ -57,7 +63,19 @@ export interface MarketPropertiesResult {
 export async function getMarketProperties(
   options: MarketPropertiesOptions = {}
 ): Promise<MarketPropertiesResult> {
-  const { page = 0, pageSize = 6, type, status, search } = options;
+  const {
+    page = 0,
+    pageSize = 6,
+    type,
+    status,
+    search,
+    location,
+    minPrice,
+    maxPrice,
+    beds,
+    baths,
+    amenities,
+  } = options;
 
   let query = supabase
     .from("properties")
@@ -80,6 +98,35 @@ export async function getMarketProperties(
   if (search && search.trim()) {
     const term = search.trim();
     query = query.or(`title.ilike.%${term}%,location.ilike.%${term}%`);
+  }
+
+  // Filter by location (specific location search)
+  if (location && location.trim()) {
+    const loc = location.trim();
+    query = query.ilike("location", `%${loc}%`);
+  }
+
+  // Filter by price range
+  if (minPrice !== undefined) {
+    query = query.gte("price", minPrice);
+  }
+  if (maxPrice !== undefined) {
+    query = query.lte("price", maxPrice);
+  }
+
+  // Filter by minimum bedrooms
+  if (beds !== undefined) {
+    query = query.gte("beds", beds);
+  }
+
+  // Filter by minimum bathrooms
+  if (baths !== undefined) {
+    query = query.gte("baths", baths);
+  }
+
+  // Filter by amenities (all selected amenities must be present)
+  if (amenities && amenities.length > 0) {
+    query = query.contains("amenities", amenities);
   }
 
   // Apply pagination range

@@ -2,19 +2,44 @@
 
 import { useState, useEffect, useCallback } from "react";
 import SearchFilters from "@/components/property/SearchFilters";
+import FeaturedCard from "@/components/property/FeaturedCard";
 import PropertyCard from "@/components/property/PropertyCard";
-import { getMarketProperties } from "@/lib/properties";
+import FiltersModal from "@/components/property/FiltersModal";
+import { getMarketProperties, getFeaturedProperties } from "@/lib/properties";
 import { Property } from "@/types/property";
 
 const PAGE_SIZE = 6;
 
+interface FilterState {
+  searchQuery: string;
+  selectedType: string;
+  marketStatus: string;
+  locationFilter: string;
+  minPrice: number | undefined;
+  maxPrice: number | undefined;
+  bedsFilter: number | undefined;
+  bathsFilter: number | undefined;
+  amenitiesFilter: string[];
+}
+
 export default function MarketListings() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedType, setSelectedType] = useState("all");
-  const [marketStatus, setMarketStatus] = useState("all");
+  const [filters, setFilters] = useState<FilterState>({
+    searchQuery: "",
+    selectedType: "all",
+    marketStatus: "all",
+    locationFilter: "",
+    minPrice: undefined,
+    maxPrice: undefined,
+    bedsFilter: undefined,
+    bathsFilter: undefined,
+    amenitiesFilter: [],
+  });
+
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [favorites, setFavorites] = useState<string[]>([]);
 
-  const [properties, setProperties] = useState<Property[]>([]);
+  const [marketProperties, setMarketProperties] = useState<Property[]>([]);
+  const [featuredProperties, setFeaturedProperties] = useState<Property[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -27,34 +52,120 @@ export default function MarketListings() {
   };
 
   // Fetch properties — resets on filter change, appends on "load more"
-  const fetchProperties = useCallback(
-    async (pageNum: number, append: boolean) => {
-      if (append) {
-        setIsLoadingMore(true);
-      } else {
-        setIsLoading(true);
-        setPage(0);
-      }
+  const fetchProperties = useCallback(async (pageNum: number, append: boolean) => {
+    if (append) {
+      setIsLoadingMore(true);
+    } else {
+      setIsLoading(true);
+      setPage(0);
+    }
 
-      const result = await getMarketProperties({
+    // Fetch both featured and market properties with same filters
+    const [marketResult, featuredResult] = await Promise.all([
+      getMarketProperties({
         page: pageNum,
         pageSize: PAGE_SIZE,
-        type: selectedType,
-        status: marketStatus,
-        search: searchQuery,
-      });
+        type: filters.selectedType,
+        status: filters.marketStatus,
+        search: filters.searchQuery,
+        location: filters.locationFilter,
+        minPrice: filters.minPrice,
+        maxPrice: filters.maxPrice,
+        beds: filters.bedsFilter,
+        baths: filters.bathsFilter,
+        amenities: filters.amenitiesFilter,
+      }),
+      getFeaturedProperties(),
+    ]);
 
-      setProperties((prev) => (append ? [...prev, ...result.data] : result.data));
-      setTotalCount(result.count);
+    setMarketProperties((prev) => (append ? [...prev, ...marketResult.data] : marketResult.data));
+    setTotalCount(marketResult.count);
+    setFeaturedProperties(featuredResult);
 
-      if (append) {
-        setIsLoadingMore(false);
-      } else {
-        setIsLoading(false);
+    if (append) {
+      setIsLoadingMore(false);
+    } else {
+      setIsLoading(false);
+    }
+  }, [filters]);
+
+  // Apply client-side filtering to properties
+  const filterProperty = (property: Property): boolean => {
+    // Filter by search query (title or location)
+    if (filters.searchQuery.trim()) {
+      const term = filters.searchQuery.toLowerCase();
+      if (!property.title.toLowerCase().includes(term) &&
+          !property.location.toLowerCase().includes(term)) {
+        return false;
       }
-    },
-    [selectedType, marketStatus, searchQuery]
-  );
+    }
+
+    // Filter by type
+    if (filters.selectedType !== "all" && property.type !== filters.selectedType) {
+      return false;
+    }
+
+    // Filter by status
+    if (filters.marketStatus !== "all") {
+      const dbStatus = filters.marketStatus === "buy" ? "sale" : filters.marketStatus;
+      if (property.status !== dbStatus) {
+        return false;
+      }
+    }
+
+    // Filter by location
+    if (filters.locationFilter.trim()) {
+      const loc = filters.locationFilter.toLowerCase();
+      if (!property.location.toLowerCase().includes(loc)) {
+        return false;
+      }
+    }
+
+    // Filter by price range
+    if (filters.minPrice !== undefined && property.price < filters.minPrice) {
+      return false;
+    }
+    if (filters.maxPrice !== undefined && property.price > filters.maxPrice) {
+      return false;
+    }
+
+    // Filter by minimum bedrooms
+    if (filters.bedsFilter !== undefined && property.beds < filters.bedsFilter) {
+      return false;
+    }
+
+    // Filter by minimum bathrooms
+    if (filters.bathsFilter !== undefined && property.baths < filters.bathsFilter) {
+      return false;
+    }
+
+    // Filter by amenities (all selected amenities must be present)
+    if (filters.amenitiesFilter.length > 0 && property.amenities) {
+      const hasAllAmenities = filters.amenitiesFilter.every(amenity =>
+        property.amenities!.includes(amenity)
+      );
+      if (!hasAllAmenities) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
+  const filteredMarketProperties = marketProperties.filter(filterProperty);
+  const filteredFeaturedProperties = featuredProperties.filter(filterProperty);
+  const allFilteredProperties = [...filteredFeaturedProperties, ...filteredMarketProperties];
+
+  // Check if any filters are active
+  const isAnyFilterActive = filters.searchQuery.trim() !== "" ||
+    filters.selectedType !== "all" ||
+    filters.marketStatus !== "all" ||
+    filters.locationFilter.trim() !== "" ||
+    filters.minPrice !== undefined ||
+    filters.maxPrice !== undefined ||
+    filters.bedsFilter !== undefined ||
+    filters.bathsFilter !== undefined ||
+    filters.amenitiesFilter.length > 0;
 
   // Reset to page 0 when filters change
   useEffect(() => {
@@ -68,69 +179,158 @@ export default function MarketListings() {
     fetchProperties(nextPage, true);
   };
 
-  const hasMore = properties.length < totalCount;
+  const hasMore = marketProperties.length < totalCount;
 
   const handleResetFilters = () => {
-    setSearchQuery("");
-    setSelectedType("all");
-    setMarketStatus("all");
+    setFilters({
+      searchQuery: "",
+      selectedType: "all",
+      marketStatus: "all",
+      locationFilter: "",
+      minPrice: undefined,
+      maxPrice: undefined,
+      bedsFilter: undefined,
+      bathsFilter: undefined,
+      amenitiesFilter: [],
+    });
   };
+
+  const handleApplyFilters = (newFilters: {
+    location: string;
+    minPrice: number | undefined;
+    maxPrice: number | undefined;
+    beds: number | undefined;
+    baths: number | undefined;
+    selectedAmenities: string[];
+  }) => {
+    setFilters((prev) => ({
+      ...prev,
+      locationFilter: newFilters.location,
+      minPrice: newFilters.minPrice,
+      maxPrice: newFilters.maxPrice,
+      bedsFilter: newFilters.beds,
+      bathsFilter: newFilters.baths,
+      amenitiesFilter: newFilters.selectedAmenities,
+    }));
+  };
+
+  // Close on escape key
+  useEffect(() => {
+    if (!isFilterModalOpen) return;
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsFilterModalOpen(false);
+    };
+    document.addEventListener("keydown", handleEscape);
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "unset";
+    };
+  }, [isFilterModalOpen]);
 
   return (
     <>
       {/* Search and Main Filters Hero */}
       <SearchFilters
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        selectedType={selectedType}
-        setSelectedType={setSelectedType}
+        searchQuery={filters.searchQuery}
+        setSearchQuery={(q) => setFilters((prev) => ({ ...prev, searchQuery: q }))}
+        selectedType={filters.selectedType}
+        setSelectedType={(t) => setFilters((prev) => ({ ...prev, selectedType: t }))}
+        onOpenFilters={() => setIsFilterModalOpen(true)}
       />
+
+      {/* Filters Modal */}
+      <FiltersModal
+        isOpen={isFilterModalOpen}
+        onClose={() => setIsFilterModalOpen(false)}
+        onApplyFilters={handleApplyFilters}
+        onClearAllFilters={handleResetFilters}
+      />
+
+      {/* Featured Properties - shown before market properties when no filters active, or included in filtered results */}
+      {!isAnyFilterActive && filteredFeaturedProperties.length > 0 && (
+        <section className="mb-16">
+          <div className="flex items-end justify-between mb-8">
+            <div>
+              <h2 className="text-2xl font-light text-nordic-dark">
+                Featured Collections
+              </h2>
+              <p className="text-nordic-muted text-sm mt-1">
+                Curated properties for the discerning eye.
+              </p>
+            </div>
+            <a
+              className="hidden sm:flex items-center gap-1 text-sm font-medium text-mosque hover:opacity-70 transition-opacity"
+              href="#"
+            >
+              View all <span className="material-icons text-sm">arrow_forward</span>
+            </a>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {filteredFeaturedProperties.map((property, index) => (
+              <FeaturedCard
+                key={`${property.id}-${index}`}
+                property={property}
+                isFavorite={favorites.includes(property.id)}
+                onToggleFavorite={() => toggleFavorite(property.id)}
+              />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* New in Market Section */}
       <section>
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
           <div>
             <h2 className="text-2xl font-light text-nordic-dark">
-              New in Market
+              {isAnyFilterActive ? "Search Results" : "New in Market"}
             </h2>
             <p className="text-nordic-muted mt-1 text-sm">
-              Fresh opportunities added this week.
+              {isAnyFilterActive
+                ? `${allFilteredProperties.length} properties found matching your criteria.`
+                : "Fresh opportunities added this week."}
             </p>
           </div>
 
-          {/* Buy / Rent Selector */}
-          <div className="flex bg-white p-1 rounded-lg self-start sm:self-auto border border-nordic-dark/5">
-            <button
-              onClick={() => setMarketStatus("all")}
-              className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
-                marketStatus === "all"
-                  ? "bg-nordic-dark text-white shadow-sm"
-                  : "text-nordic-muted hover:text-nordic-dark"
-              }`}
-            >
-              All
-            </button>
-            <button
-              onClick={() => setMarketStatus("buy")}
-              className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
-                marketStatus === "buy"
-                  ? "bg-nordic-dark text-white shadow-sm"
-                  : "text-nordic-muted hover:text-nordic-dark"
-              }`}
-            >
-              Buy
-            </button>
-            <button
-              onClick={() => setMarketStatus("rent")}
-              className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
-                marketStatus === "rent"
-                  ? "bg-nordic-dark text-white shadow-sm"
-                  : "text-nordic-muted hover:text-nordic-dark"
-              }`}
-            >
-              Rent
-            </button>
-          </div>
+          {/* Buy / Rent Selector - hide when filtering */}
+          {!isAnyFilterActive && (
+            <div className="flex bg-white p-1 rounded-lg self-start sm:self-auto border border-nordic-dark/5">
+              <button
+                onClick={() => setFilters((prev) => ({ ...prev, marketStatus: "all" }))}
+                className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
+                  filters.marketStatus === "all"
+                    ? "bg-nordic-dark text-white shadow-sm"
+                    : "text-nordic-muted hover:text-nordic-dark"
+                }`}
+              >
+                All
+              </button>
+              <button
+                onClick={() => setFilters((prev) => ({ ...prev, marketStatus: "buy" }))}
+                className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
+                  filters.marketStatus === "buy"
+                    ? "bg-nordic-dark text-white shadow-sm"
+                    : "text-nordic-muted hover:text-nordic-dark"
+                }`}
+              >
+                Buy
+              </button>
+              <button
+                onClick={() => setFilters((prev) => ({ ...prev, marketStatus: "rent" }))}
+                className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
+                  filters.marketStatus === "rent"
+                    ? "bg-nordic-dark text-white shadow-sm"
+                    : "text-nordic-muted hover:text-nordic-dark"
+                }`}
+              >
+                Rent
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Loading Skeleton */}
@@ -138,7 +338,7 @@ export default function MarketListings() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {Array.from({ length: PAGE_SIZE }).map((_, i) => (
               <div
-                key={i}
+                key={`skeleton-${i}`}
                 className="bg-white rounded-xl border border-nordic-dark/5 overflow-hidden animate-pulse"
               >
                 <div className="h-48 bg-nordic-dark/5" />
@@ -150,11 +350,49 @@ export default function MarketListings() {
               </div>
             ))}
           </div>
-        ) : properties.length > 0 ? (
+        ) : isAnyFilterActive ? (
+          // When filtering, show both featured and market properties together
+          allFilteredProperties.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {allFilteredProperties.map((property, index) => (
+                property.featured ? (
+                  <FeaturedCard
+                    key={`${property.id}-${index}`}
+                    property={property}
+                    isFavorite={favorites.includes(property.id)}
+                    onToggleFavorite={() => toggleFavorite(property.id)}
+                  />
+                ) : (
+                  <PropertyCard
+                    key={`${property.id}-${index}`}
+                    property={property}
+                    isFavorite={favorites.includes(property.id)}
+                    onToggleFavorite={() => toggleFavorite(property.id)}
+                  />
+                )
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-20 bg-white rounded-xl border border-dashed border-nordic-dark/10">
+              <span className="material-symbols-outlined text-5xl text-nordic-muted opacity-65 mb-3">
+                domain_disabled
+              </span>
+              <p className="text-nordic-muted text-lg font-light">
+                No properties match your current search criteria.
+              </p>
+              <button
+                onClick={handleResetFilters}
+                className="mt-4 px-5 py-2 bg-mosque text-white rounded-lg text-sm font-medium hover:bg-mosque/90 transition-colors"
+              >
+                Reset Filters
+              </button>
+            </div>
+          )
+        ) : filteredMarketProperties.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {properties.map((property) => (
+            {filteredMarketProperties.map((property, index) => (
               <PropertyCard
-                key={property.id}
+                key={`${property.id}-${index}`}
                 property={property}
                 isFavorite={favorites.includes(property.id)}
                 onToggleFavorite={() => toggleFavorite(property.id)}
@@ -186,28 +424,9 @@ export default function MarketListings() {
               disabled={isLoadingMore}
               className="px-8 py-3 bg-white border border-nordic-dark/10 hover:border-mosque hover:text-mosque text-nordic-dark font-medium rounded-lg transition-all hover:shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoadingMore ? (
+{isLoadingMore ? (
                 <span className="flex items-center gap-2">
-                  <svg
-                    className="animate-spin h-4 w-4"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                  </svg>
+                  <span className="animate-spin material-icons text-sm">refresh</span>
                   Loading...
                 </span>
               ) : (
