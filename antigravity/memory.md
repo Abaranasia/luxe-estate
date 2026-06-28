@@ -42,20 +42,21 @@ Build a premium, minimalist real estate app using **Next.js 16 (App Router)**, *
 - **Footer** (`components/layout/Footer/Footer.tsx`): Simple footer with copyright and social links (Facebook, Twitter/X).
 
 #### 4. Property Data Layer
-- **Types** (`types/property.ts`): `Property` (UI-facing) and `PropertyRow` (Supabase row) interfaces. Includes: `id`, `title`, `location`, `price`, `beds`, `baths`, `area`, `type`, `status`, `slug`, `images`, `isExclusive`, `isNewArrival`, `featured`, `lat`, `lng`.
+- **Types** (`types/property.ts`): `Property` (UI-facing) and `PropertyRow` (Supabase row) interfaces. Includes: `id`, `title`, `location`, `price`, `beds`, `baths`, `area`, `type`, `status`, `slug`, `images`, `isExclusive`, `isNewArrival`, `featured`, `lat`, `lng`, `amenities`.
 - **DB Functions** (`lib/properties.ts`):
   - `getPropertyBySlug(slug)` → `Property | null`
   - `getFeaturedProperties()` → `Property[]`
-  - `getMarketProperties(options)` → paginated, filtered `Property[]`
-- **Mock Data** (`__tests__/mock_data/properties.ts`): 18 properties (3 featured, 15 market) with coordinates.
+  - `getMarketProperties(options)` → paginated, filtered `Property[]` (supports: type, status, search, location, minPrice, maxPrice, beds, baths, amenities)
+- **Mock Data** (`__tests__/mock_data/properties.ts`): 38 properties (2 featured, 36 market) with coordinates and amenities.
 - **Cleanup**: Removed redundant `image_url` field from `PropertyRow`. `toProperty()` now uses `row.images` directly (all properties have images populated).
 
 #### 5. Database Migrations (`supabase/migrations/`)
 | File | Purpose |
 |------|---------|
 | `20240101_add_slug_and_images.sql` | Added `slug` (unique) and `images` (text[]) columns |
-| `20240102_populate_slugs_and_images.sql` | Populated slugs (kebab-case from title) and image URLs for all 18 properties |
-| `20240627_add_lat_lng.sql` | Added `lat`/`lng` (numeric) columns and populated coordinates for all properties |
+| `20240102_populate_slugs_and_images.sql` | Populated slugs and image URLs for all properties |
+| `20240627_add_lat_lng.sql` | Added `lat`/`lng` (numeric) columns and populated coordinates |
+| `20240628_add_amenities_and_new_properties.sql` | Added `amenities` column, populated amenities for existing, inserted 20 new properties |
 
 #### 6. Home Page (`app/page.tsx`)
 - Hero section with large headline, subtitle, and two CTAs (Buy / Rent)
@@ -67,7 +68,8 @@ Build a premium, minimalist real estate app using **Next.js 16 (App Router)**, *
 #### 7. Property Cards
 - **FeaturedCard** (`components/property/FeaturedCard/`): Horizontal card with large image, price badge, title, location, bed/bath/area icons, "View Details" link.
 - **PropertyCard** (`components/property/PropertyCard/`): Vertical card with image, favorite button (heart), status tag (FOR SALE / FOR RENT), price, title, location, amenities row.
-- **SearchFilters** (`components/property/SearchFilters/`): Text search input + filter pills (All, Buy, Rent, type filters).
+- **SearchFilters** (`components/property/SearchFilters/`): Text search input + filter pills (All, Buy, Rent, type filters) + "Filters" button that opens advanced modal.
+- **FiltersModal** (`components/property/FiltersModal.tsx`): Modal with location, price range, property type, bedrooms/bathrooms steppers, amenities chips, clear/apply buttons. Closes on escape key, click-outside, or close button.
 
 #### 8. Property Detail Page (`app/properties/[slug]/page.tsx`)
 - Metadata with JSON-LD structured data (`RealEstateListing`)
@@ -117,8 +119,10 @@ Build a premium, minimalist real estate app using **Next.js 16 (App Router)**, *
 | Loading & error states for property detail | TODO — `loading.tsx` and `error.tsx` not yet created |
 | Search filters synced to URL params | TODO |
 | Agent detail / schedule viewing flow | TODO |
-| Keep memory.md updated with progress | IN_PROGRESS — this file |
+| Keep memory.md updated with progress | DONE |
 | Skills reference guide | DONE — `antigravity/skills.md` created |
+| Filter modal and advanced search | DONE — `FiltersModal` component with price, beds, baths, amenities filters |
+| 20 additional mock properties | DONE — mock data now has 38 properties with diverse amenities |
 
 ---
 
@@ -131,14 +135,15 @@ lib/properties.ts              # Data fetching functions
 __tests__/mock_data/properties.ts  # 18 mock properties with coordinates
 
 components/
-  layout/
-    Navbar/
-    Footer/
-  property/
-    FeaturedCard/
-    PropertyCard/
-    SearchFilters/
-    PropertyMap.tsx           # ← NEW Leaflet map component
+   layout/
+     Navbar/
+     Footer/
+   property/
+     FeaturedCard/
+     PropertyCard/
+     SearchFilters/
+     FiltersModal.tsx         # ← NEW advanced filter modal
+     PropertyMap.tsx           # ← Leaflet map component
 
 app/
   page.tsx                    # Home page (featured + market listings)
@@ -147,14 +152,17 @@ app/
   layout.tsx                  # Root layout
 
 supabase/migrations/
-  20240101_add_slug_and_images.sql
-  20240102_populate_slugs_and_images.sql
-  20240627_add_lat_lng.sql    # ← NEW lat/lng migration
+   20240101_add_slug_and_images.sql
+   20240102_populate_slugs_and_images.sql
+   20240627_add_lat_lng.sql
+   20240628_add_amenities_and_new_properties.sql  # ← NEW amenities + 20 properties
 
 antigravity/resources/
   property_details_screen/
     code.html                 # Design reference
     screen.png
+  search_filters_screen/
+    code.html                 # Filter modal design reference
 ```
 
 ---
