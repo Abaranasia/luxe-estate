@@ -270,9 +270,9 @@ export default function MarketListings() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {filteredFeaturedProperties.map((property) => (
+            {filteredFeaturedProperties.map((property, index) => (
               <FeaturedCard
-                key={property.id}
+                key={`${property.id}-${index}`}
                 property={property}
                 isFavorite={favorites.includes(property.id)}
                 onToggleFavorite={() => toggleFavorite(property.id)}
@@ -338,7 +338,7 @@ export default function MarketListings() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {Array.from({ length: PAGE_SIZE }).map((_, i) => (
               <div
-                key={i}
+                key={`skeleton-${i}`}
                 className="bg-white rounded-xl border border-nordic-dark/5 overflow-hidden animate-pulse"
               >
                 <div className="h-48 bg-nordic-dark/5" />
@@ -354,17 +354,17 @@ export default function MarketListings() {
           // When filtering, show both featured and market properties together
           allFilteredProperties.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {allFilteredProperties.map((property) => (
+              {allFilteredProperties.map((property, index) => (
                 property.featured ? (
                   <FeaturedCard
-                    key={property.id}
+                    key={`${property.id}-${index}`}
                     property={property}
                     isFavorite={favorites.includes(property.id)}
                     onToggleFavorite={() => toggleFavorite(property.id)}
                   />
                 ) : (
                   <PropertyCard
-                    key={property.id}
+                    key={`${property.id}-${index}`}
                     property={property}
                     isFavorite={favorites.includes(property.id)}
                     onToggleFavorite={() => toggleFavorite(property.id)}
@@ -390,9 +390,9 @@ export default function MarketListings() {
           )
         ) : filteredMarketProperties.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredMarketProperties.map((property) => (
+            {filteredMarketProperties.map((property, index) => (
               <PropertyCard
-                key={property.id}
+                key={`${property.id}-${index}`}
                 property={property}
                 isFavorite={favorites.includes(property.id)}
                 onToggleFavorite={() => toggleFavorite(property.id)}

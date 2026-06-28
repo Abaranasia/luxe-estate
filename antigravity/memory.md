@@ -74,6 +74,7 @@ Build a premium, minimalist real estate app using **Next.js 16 (App Router)**, *
 - Loading skeletons (6 placeholders) during initial fetch
 - Empty state with "domain_disabled" icon and "Reset Filters" button
 - Search filters synced to URL params (TODO)
+- **Fixed**: React key warnings by using `${property.id}-${index}` for unique keys
 
 #### 9. Property Detail Page (`app/properties/[slug]/page.tsx`)
 - Metadata with dynamic title/description
@@ -105,6 +106,10 @@ Build a premium, minimalist real estate app using **Next.js 16 (App Router)**, *
 #### Issue 4: Image optimization warnings
 - **Problem**: ESLint warns about `<img>` elements (LCP/bandwidth). Project uses external Google image URLs.
 - **Fix**: PropertyGallery uses `next/image` component with proper sizing. Card components still use `<img>` pending remote patterns configuration.
+
+#### Issue 5: Duplicate React keys in MarketListings
+- **Problem**: Browser console showed "Encountered two children with the same key" error.
+- **Fix**: Updated all property map keys to use `${property.id}-${index}` pattern for uniqueness, and skeleton keys to use `skeleton-${i}` format.
 
 ---
 
