@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import SearchFilters from "@/components/property/SearchFilters";
 import PropertyCard from "@/components/property/PropertyCard";
+import FiltersModal from "@/components/property/FiltersModal";
 import { getMarketProperties } from "@/lib/properties";
 import { Property } from "@/types/property";
 
@@ -13,6 +14,15 @@ export default function MarketListings() {
   const [selectedType, setSelectedType] = useState("all");
   const [marketStatus, setMarketStatus] = useState("all");
   const [favorites, setFavorites] = useState<string[]>([]);
+
+  // Advanced filter state
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [locationFilter, setLocationFilter] = useState("");
+  const [minPrice, setMinPrice] = useState<number | undefined>(undefined);
+  const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined);
+  const [bedsFilter, setBedsFilter] = useState<number | undefined>(undefined);
+  const [bathsFilter, setBathsFilter] = useState<number | undefined>(undefined);
+  const [amenitiesFilter, setAmenitiesFilter] = useState<string[]>([]);
 
   const [properties, setProperties] = useState<Property[]>([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -42,6 +52,12 @@ export default function MarketListings() {
         type: selectedType,
         status: marketStatus,
         search: searchQuery,
+        location: locationFilter,
+        minPrice,
+        maxPrice,
+        beds: bedsFilter,
+        baths: bathsFilter,
+        amenities: amenitiesFilter,
       });
 
       setProperties((prev) => (append ? [...prev, ...result.data] : result.data));
@@ -53,7 +69,7 @@ export default function MarketListings() {
         setIsLoading(false);
       }
     },
-    [selectedType, marketStatus, searchQuery]
+    [selectedType, marketStatus, searchQuery, locationFilter, minPrice, maxPrice, bedsFilter, bathsFilter, amenitiesFilter]
   );
 
   // Reset to page 0 when filters change
@@ -74,6 +90,28 @@ export default function MarketListings() {
     setSearchQuery("");
     setSelectedType("all");
     setMarketStatus("all");
+    setLocationFilter("");
+    setMinPrice(undefined);
+    setMaxPrice(undefined);
+    setBedsFilter(undefined);
+    setBathsFilter(undefined);
+    setAmenitiesFilter([]);
+  };
+
+  const handleApplyFilters = (filters: {
+    location: string;
+    minPrice: number | undefined;
+    maxPrice: number | undefined;
+    beds: number | undefined;
+    baths: number | undefined;
+    selectedAmenities: string[];
+  }) => {
+    setLocationFilter(filters.location);
+    setMinPrice(filters.minPrice);
+    setMaxPrice(filters.maxPrice);
+    setBedsFilter(filters.beds);
+    setBathsFilter(filters.baths);
+    setAmenitiesFilter(filters.selectedAmenities);
   };
 
   return (
@@ -84,6 +122,15 @@ export default function MarketListings() {
         setSearchQuery={setSearchQuery}
         selectedType={selectedType}
         setSelectedType={setSelectedType}
+        onOpenFilters={() => setIsFilterModalOpen(true)}
+      />
+
+      {/* Filters Modal */}
+      <FiltersModal
+        isOpen={isFilterModalOpen}
+        onClose={() => setIsFilterModalOpen(false)}
+        onApplyFilters={handleApplyFilters}
+        onClearAllFilters={handleResetFilters}
       />
 
       {/* New in Market Section */}

@@ -5,6 +5,7 @@ interface SearchFiltersProps {
   setSearchQuery: (query: string) => void;
   selectedType: string;
   setSelectedType: (type: string) => void;
+  onOpenFilters?: () => void;
 }
 
 export default function SearchFilters({
@@ -12,6 +13,7 @@ export default function SearchFilters({
   setSearchQuery,
   selectedType,
   setSelectedType,
+  onOpenFilters,
 }: SearchFiltersProps) {
   const propertyTypes = [
     { value: "all", label: "All" },
@@ -73,7 +75,10 @@ export default function SearchFilters({
 
           <div className="w-px h-6 bg-nordic-dark/10 mx-2"></div>
           
-          <button className="whitespace-nowrap flex items-center gap-1 px-4 py-2 rounded-full text-nordic-dark font-medium text-sm hover:bg-black/5 transition-colors">
+          <button
+            onClick={onOpenFilters}
+            className="whitespace-nowrap flex items-center gap-1 px-4 py-2 rounded-full text-nordic-dark font-medium text-sm hover:bg-black/5 transition-colors"
+          >
             <span className="material-icons text-base">tune</span> Filters
           </button>
         </div>
