@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface FiltersModalProps {
   isOpen: boolean;
@@ -38,9 +38,10 @@ export default function FiltersModal({
   const [baths, setBaths] = useState(0);
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
 
-  // Reset state when modal opens
+  // Reset state when modal opens (using ref to detect open transition)
+  const prevIsOpenRef = useRef<boolean>(false);
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && !prevIsOpenRef.current) {
       setLocation("");
       setMinPrice("");
       setMaxPrice("");
@@ -48,6 +49,7 @@ export default function FiltersModal({
       setBaths(0);
       setSelectedAmenities([]);
     }
+    prevIsOpenRef.current = isOpen;
   }, [isOpen]);
 
   // Close on escape key
@@ -180,67 +182,63 @@ export default function FiltersModal({
             </div>
           </section>
 
-          <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-3">
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                Property Type
-              </label>
-              <div className="relative">
-                <select className="w-full bg-clear-day border-0 rounded-lg py-3 pl-4 pr-10 text-nordic-dark appearance-none focus:ring-2 focus:ring-mosque cursor-pointer">
-                  <option>Any Type</option>
-                  <option>House</option>
-                  <option>Apartment</option>
-                  <option>Villa</option>
-                  <option>Penthouse</option>
-                </select>
-                <span className="material-icons absolute right-3 top-3 text-gray-400 pointer-events-none">
-                  expand_more
-                </span>
-              </div>
-            </div>
+          <section>
+            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">
+              Property Type
+            </label>
+            <p className="text-xs text-gray-500 mb-3">
+              Property type filters are available in the search bar above.
+            </p>
+          </section>
 
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-gray-900">Bedrooms</span>
-                <div className="flex items-center space-x-3 bg-clear-day rounded-full p-1">
-                  <button
-                    onClick={() => setBeds(Math.max(0, beds - 1))}
-                    disabled={beds === 0}
-                    className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-gray-500 hover:text-mosque disabled:opacity-50 transition-colors"
-                  >
-                    <span className="material-icons text-base">remove</span>
-                  </button>
-                  <span className="text-sm font-semibold w-4 text-center">
-                    {beds > 0 ? `${beds}+` : "Any"}
-                  </span>
-                  <button
-                    onClick={() => setBeds(beds + 1)}
-                    className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-mosque hover:bg-mosque hover:text-white transition-colors"
-                  >
-                    <span className="material-icons text-base">add</span>
-                  </button>
+          <section>
+            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">
+              Bedrooms & Bathrooms
+            </label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium text-gray-900">Bedrooms</span>
+                  <div className="flex items-center space-x-3 bg-clear-day rounded-full p-1">
+                    <button
+                      onClick={() => setBeds(Math.max(0, beds - 1))}
+                      disabled={beds === 0}
+                      className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-gray-500 hover:text-mosque disabled:opacity-50 transition-colors"
+                    >
+                      <span className="material-icons text-base">remove</span>
+                    </button>
+                    <span className="text-sm font-semibold w-4 text-center">
+                      {beds > 0 ? `${beds}+` : "Any"}
+                    </span>
+                    <button
+                      onClick={() => setBeds(beds + 1)}
+                      className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-mosque hover:bg-mosque hover:text-white transition-colors"
+                    >
+                      <span className="material-icons text-base">add</span>
+                    </button>
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-gray-900">Bathrooms</span>
-                <div className="flex items-center space-x-3 bg-clear-day rounded-full p-1">
-                  <button
-                    onClick={() => setBaths(Math.max(0, baths - 1))}
-                    disabled={baths === 0}
-                    className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-gray-500 hover:text-mosque disabled:opacity-50 transition-colors"
-                  >
-                    <span className="material-icons text-base">remove</span>
-                  </button>
-                  <span className="text-sm font-semibold w-4 text-center">
-                    {baths > 0 ? `${baths}+` : "Any"}
-                  </span>
-                  <button
-                    onClick={() => setBaths(baths + 1)}
-                    className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-mosque hover:bg-mosque hover:text-white transition-colors"
-                  >
-                    <span className="material-icons text-base">add</span>
-                  </button>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium text-gray-900">Bathrooms</span>
+                  <div className="flex items-center space-x-3 bg-clear-day rounded-full p-1">
+                    <button
+                      onClick={() => setBaths(Math.max(0, baths - 1))}
+                      disabled={baths === 0}
+                      className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-gray-500 hover:text-mosque disabled:opacity-50 transition-colors"
+                    >
+                      <span className="material-icons text-base">remove</span>
+                    </button>
+                    <span className="text-sm font-semibold w-4 text-center">
+                      {baths > 0 ? `${baths}+` : "Any"}
+                    </span>
+                    <button
+                      onClick={() => setBaths(baths + 1)}
+                      className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-mosque hover:bg-mosque hover:text-white transition-colors"
+                    >
+                      <span className="material-icons text-base">add</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -250,33 +248,36 @@ export default function FiltersModal({
             <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">
               Amenities & Features
             </label>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {AMENITY_OPTIONS.map((amenity) => {
-                const isSelected = selectedAmenities.includes(amenity.value);
-                return (
-                  <label key={amenity.value} className="cursor-pointer group">
-                    <input
-                      type="checkbox"
-                      checked={isSelected}
-                      onChange={() => handleAmenityToggle(amenity.value)}
-                      className="sr-only"
-                    />
-                    <div
-                      className={`h-full px-4 py-3 rounded-lg border text-sm flex items-center justify-center gap-2 transition-all ${
-                        isSelected
-                          ? "border-mosque bg-mosque/5 text-mosque"
-                          : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
-                      }`}
-                    >
-                      <span className={`material-icons text-lg ${isSelected ? "text-mosque" : "text-gray-400"}`}>
-                        {amenity.icon}
-                      </span>
-                      {amenity.label}
-                    </div>
-                  </label>
-                );
-              })}
-            </div>
+<div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+               {AMENITY_OPTIONS.map((amenity) => {
+                 const isSelected = selectedAmenities.includes(amenity.value);
+                 return (
+                   <label key={amenity.value} className="cursor-pointer group relative">
+                     <input
+                       type="checkbox"
+                       checked={isSelected}
+                       onChange={() => handleAmenityToggle(amenity.value)}
+                       className="sr-only"
+                     />
+                     <div
+                       className={`h-full px-4 py-3 rounded-lg border text-sm flex items-center justify-center gap-2 transition-all ${
+                         isSelected
+                           ? "border-mosque bg-mosque/5 text-mosque"
+                           : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                       }`}
+                     >
+                       <span className={`material-icons text-lg ${isSelected ? "text-mosque" : "text-gray-400"}`}>
+                         {amenity.icon}
+                       </span>
+                       {amenity.label}
+                     </div>
+                     {isSelected && (
+                       <div className="absolute top-2 right-2 w-2 h-2 bg-mosque rounded-full transition-opacity"></div>
+                     )}
+                   </label>
+                 );
+               })}
+             </div>
           </section>
         </div>
 
