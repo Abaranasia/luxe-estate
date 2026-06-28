@@ -2,7 +2,7 @@ import { Property } from "@/types/property";
 
 export const mockProperties: Property[] = [
   {
-    id: "feat-1",
+    id: "market-41",
     title: "The Glass Pavilion",
     location: "Beverly Hills, California",
     price: 5250000,
@@ -26,7 +26,7 @@ export const mockProperties: Property[] = [
     amenities: ["swimming_pool", "gym", "parking", "wifi", "bbq"],
   },
   {
-    id: "feat-2",
+    id: "market-42",
     title: "Azure Heights Penthouse",
     location: "Downtown, Vancouver",
     price: 3800000,
