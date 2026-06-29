@@ -1,0 +1,50 @@
+{
+  "navbar": {
+    "buy": "Acheter",
+    "rent": "Louer",
+    "sell": "Vendre",
+    "savedHomes": "Maisons sauvegardées"
+  },
+  "search": {
+    "hero": "Trouvez votre sanctuaire",
+    "placeholder": "Rechercher par ville, quartier ou adresse...",
+    "button": "Rechercher",
+    "filters": "Filtres",
+    "propertyTypes": {
+      "all": "Tous",
+      "house": "Maison",
+      "apartment": "Appartement",
+      "villa": "Villa",
+      "penthouse": "Penthouse"
+    }
+  },
+  "filters": {
+    "location": "Emplacement",
+    "locationPlaceholder": "Ville, quartier ou adresse",
+    "priceRange": "Fourchette de prix",
+    "minPrice": "Prix min",
+    "maxPrice": "Prix max",
+    "noLimit": "Aucune limite",
+    "propertyType": "Type de propriété",
+    "propertyTypeHint": "Les filtres de type de propriété sont disponibles dans la barre de recherche.",
+    "bedroomsBathrooms": "Chambres et salles de bain",
+    "bedrooms": "Chambres",
+    "bathrooms": "Salles de bain",
+    "any": "Tous",
+    "amenities": "Équipements et caractéristiques",
+    "clearAll": "Effacer tous les filtres",
+    "apply": "Appliquer les filtres",
+    "amenitiesSwimmingPool": "Piscine",
+    "amenitiesGym": "Gymnase",
+    "amenitiesParking": "Parking",
+    "amenitiesAirConditioning": "Climatisation",
+    "amenitiesWifi": "Wifi haut débit",
+    "amenitiesDeck": "Terrasse"
+  },
+  "propertyCard": {
+    "forSale": "À VENDRE",
+    "forRent": "À LOUER",
+    "exclusive": "Exclusif",
+    "newArrival": "Nouveau"
+  }
+}

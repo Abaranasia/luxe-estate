@@ -1,0 +1,50 @@
+{
+  "navbar": {
+    "buy": "Buy",
+    "rent": "Rent",
+    "sell": "Sell",
+    "savedHomes": "Saved Homes"
+  },
+  "search": {
+    "hero": "Find your sanctuary",
+    "placeholder": "Search by city, neighborhood, or address...",
+    "button": "Search",
+    "filters": "Filters",
+    "propertyTypes": {
+      "all": "All",
+      "house": "House",
+      "apartment": "Apartment",
+      "villa": "Villa",
+      "penthouse": "Penthouse"
+    }
+  },
+  "filters": {
+    "location": "Location",
+    "locationPlaceholder": "City, neighborhood, or address",
+    "priceRange": "Price Range",
+    "minPrice": "Min Price",
+    "maxPrice": "Max Price",
+    "noLimit": "No limit",
+    "propertyType": "Property Type",
+    "propertyTypeHint": "Property type filters are available in the search bar above.",
+    "bedroomsBathrooms": "Bedrooms & Bathrooms",
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms",
+    "any": "Any",
+    "amenities": "Amenities & Features",
+    "clearAll": "Clear all filters",
+    "apply": "Apply Filters",
+    "amenitiesSwimmingPool": "Swimming Pool",
+    "amenitiesGym": "Gym",
+    "amenitiesParking": "Parking",
+    "amenitiesAirConditioning": "Air Conditioning",
+    "amenitiesWifi": "High-speed Wifi",
+    "amenitiesDeck": "Patio / Terrace"
+  },
+  "propertyCard": {
+    "forSale": "FOR SALE",
+    "forRent": "FOR RENT",
+    "exclusive": "Exclusive",
+    "newArrival": "New Arrival"
+  }
+}
