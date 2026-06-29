@@ -46,5 +46,17 @@
     "forRent": "FOR RENT",
     "exclusive": "Exclusive",
     "newArrival": "New Arrival"
+  },
+  "market": {
+    "featured": "Featured Collections",
+    "featuredSubtitle": "Curated properties for the discerning eye.",
+    "viewAll": "View all",
+    "searchResults": "Search Results",
+    "propertiesFound": "{{count}} properties found matching your criteria.",
+    "freshOpportunities": "Fresh opportunities added this week.",
+    "all": "All",
+    "noProperties": "No properties match your current search criteria.",
+    "loading": "Loading...",
+    "loadMore": "Load more properties"
   }
 }

@@ -46,5 +46,17 @@
     "forRent": "À LOUER",
     "exclusive": "Exclusif",
     "newArrival": "Nouveau"
+  },
+  "market": {
+    "featured": "Collections en vedette",
+    "featuredSubtitle": "Propriétés sélectionnées pour un client exigeant.",
+    "viewAll": "Voir tout",
+    "searchResults": "Résultats de recherche",
+    "propertiesFound": "{{count}} propriétés trouvées correspondant à vos critères.",
+    "freshOpportunities": "Nouvelles opportunités ajoutées cette semaine.",
+    "all": "Tous",
+    "noProperties": "Aucune propriété ne correspond à vos filtres actuels.",
+    "loading": "Chargement...",
+    "loadMore": "Charger plus de propriétés"
   }
 }

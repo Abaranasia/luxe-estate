@@ -7,6 +7,7 @@ import PropertyCard from "@/components/property/PropertyCard";
 import FiltersModal from "@/components/property/FiltersModal";
 import { getMarketProperties, getFeaturedProperties } from "@/lib/properties";
 import { Property } from "@/types/property";
+import { useTranslation } from "@/lib/i18n";
 
 const PAGE_SIZE = 6;
 
@@ -44,6 +45,8 @@ export default function MarketListings() {
   const [page, setPage] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  const { t } = useTranslation();
 
   const toggleFavorite = (id: string) => {
     setFavorites((prev) =>
@@ -255,17 +258,17 @@ export default function MarketListings() {
           <div className="flex items-end justify-between mb-8">
             <div>
               <h2 className="text-2xl font-light text-nordic-dark">
-                Featured Collections
+                {t("market.featured")}
               </h2>
               <p className="text-nordic-muted text-sm mt-1">
-                Curated properties for the discerning eye.
+                {t("market.featuredSubtitle")}
               </p>
             </div>
             <a
               className="hidden sm:flex items-center gap-1 text-sm font-medium text-mosque hover:opacity-70 transition-opacity"
               href="#"
             >
-              View all <span className="material-icons text-sm">arrow_forward</span>
+              {t("market.viewAll")} <span className="material-icons text-sm">arrow_forward</span>
             </a>
           </div>
 
@@ -287,12 +290,12 @@ export default function MarketListings() {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
           <div>
             <h2 className="text-2xl font-light text-nordic-dark">
-              {isAnyFilterActive ? "Search Results" : "New in Market"}
+              {isAnyFilterActive ? t("market.searchResults") : t("market.newInMarket")}
             </h2>
             <p className="text-nordic-muted mt-1 text-sm">
               {isAnyFilterActive
-                ? `${allFilteredProperties.length} properties found matching your criteria.`
-                : "Fresh opportunities added this week."}
+                ? t("market.propertiesFound", { count: allFilteredProperties.length })
+                : t("market.freshOpportunities")}
             </p>
           </div>
 
@@ -307,7 +310,7 @@ export default function MarketListings() {
                     : "text-nordic-muted hover:text-nordic-dark"
                 }`}
               >
-                All
+                {t("market.all")}
               </button>
               <button
                 onClick={() => setFilters((prev) => ({ ...prev, marketStatus: "buy" }))}
@@ -317,7 +320,7 @@ export default function MarketListings() {
                     : "text-nordic-muted hover:text-nordic-dark"
                 }`}
               >
-                Buy
+                {t("navbar.buy")}
               </button>
               <button
                 onClick={() => setFilters((prev) => ({ ...prev, marketStatus: "rent" }))}
@@ -327,7 +330,7 @@ export default function MarketListings() {
                     : "text-nordic-muted hover:text-nordic-dark"
                 }`}
               >
-                Rent
+                {t("navbar.rent")}
               </button>
             </div>
           )}
@@ -378,13 +381,13 @@ export default function MarketListings() {
                 domain_disabled
               </span>
               <p className="text-nordic-muted text-lg font-light">
-                No properties match your current search criteria.
+                {t("market.noProperties")}
               </p>
               <button
                 onClick={handleResetFilters}
                 className="mt-4 px-5 py-2 bg-mosque text-white rounded-lg text-sm font-medium hover:bg-mosque/90 transition-colors"
               >
-                Reset Filters
+                {t("filters.clearAll")}
               </button>
             </div>
           )
@@ -405,13 +408,13 @@ export default function MarketListings() {
               domain_disabled
             </span>
             <p className="text-nordic-muted text-lg font-light">
-              No properties match your current search criteria.
+              {t("market.noProperties")}
             </p>
             <button
               onClick={handleResetFilters}
               className="mt-4 px-5 py-2 bg-mosque text-white rounded-lg text-sm font-medium hover:bg-mosque/90 transition-colors"
             >
-              Reset Filters
+              {t("filters.clearAll")}
             </button>
           </div>
         )}
@@ -424,13 +427,13 @@ export default function MarketListings() {
               disabled={isLoadingMore}
               className="px-8 py-3 bg-white border border-nordic-dark/10 hover:border-mosque hover:text-mosque text-nordic-dark font-medium rounded-lg transition-all hover:shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
-{isLoadingMore ? (
+              {isLoadingMore ? (
                 <span className="flex items-center gap-2">
                   <span className="animate-spin material-icons text-sm">refresh</span>
-                  Loading...
+                  {t("market.loading")}
                 </span>
               ) : (
-                "Load more properties"
+                t("market.loadMore")
               )}
             </button>
           </div>

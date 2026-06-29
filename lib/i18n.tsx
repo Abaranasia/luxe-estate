@@ -12,11 +12,12 @@ const translations: Record<Locale, () => Promise<{ default: Record<string, unkno
 };
 
 type TranslationKey = string;
+type InterpolationValues = Record<string, string | number>;
 
 interface I18nContextValue {
   locale: Locale;
   setLocale: (locale: Locale) => void;
-  t: (key: TranslationKey) => string;
+  t: (key: TranslationKey, values?: InterpolationValues) => string;
   isLoading: boolean;
 }
 
@@ -53,7 +54,7 @@ export function LanguageProvider({ children, initialLocale = "en" }: LanguagePro
     setCookie("NEXT_LOCALE", newLocale, 365);
   };
 
-  const t = (key: TranslationKey): string => {
+  const t = (key: TranslationKey, values?: InterpolationValues): string => {
     if (isLoading) return key;
     const keys = key.split(".");
     let value: unknown = messages;
@@ -66,7 +67,13 @@ export function LanguageProvider({ children, initialLocale = "en" }: LanguagePro
       }
     }
 
-    return typeof value === "string" ? value : key;
+    if (typeof value === "string") {
+      if (values) {
+        return value.replace(/\{\{(\w+)\}\}/g, (_, keyName) => String(values[keyName] ?? ""));
+      }
+      return value;
+    }
+    return key;
   };
 
   return (

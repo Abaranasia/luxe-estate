@@ -11,11 +11,11 @@ interface SearchFiltersProps {
 }
 
 const propertyTypes = [
-  { value: "all", label: "propertyTypes.all" },
-  { value: "house", label: "propertyTypes.house" },
-  { value: "apartment", label: "propertyTypes.apartment" },
-  { value: "villa", label: "propertyTypes.villa" },
-  { value: "penthouse", label: "propertyTypes.penthouse" },
+  { value: "all", label: "all" },
+  { value: "house", label: "house" },
+  { value: "apartment", label: "apartment" },
+  { value: "villa", label: "villa" },
+  { value: "penthouse", label: "penthouse" },
 ];
 
 export default function SearchFilters({
@@ -46,11 +46,11 @@ export default function SearchFilters({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="block w-full pl-12 pr-4 py-4 rounded-xl border-none bg-white text-nordic-dark shadow-soft placeholder-nordic-muted/60 focus:ring-2 focus:ring-mosque focus:bg-white outline-none transition-all text-lg"
-placeholder={t("search.placeholder")}
-           />
-           <button className="absolute inset-y-2 right-2 px-6 bg-mosque hover:bg-mosque/90 text-white font-medium rounded-lg transition-colors flex items-center justify-center shadow-lg shadow-mosque/20">
-             {t("search.button")}
-           </button>
+            placeholder={t("search.placeholder")}
+          />
+          <button className="absolute inset-y-2 right-2 px-6 bg-mosque hover:bg-mosque/90 text-white font-medium rounded-lg transition-colors flex items-center justify-center shadow-lg shadow-mosque/20">
+            {t("search.button")}
+          </button>
         </div>
 
         {/* Filter Pills */}

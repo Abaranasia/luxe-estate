@@ -46,5 +46,17 @@
     "forRent": "EN ALQUILER",
     "exclusive": "Exclusivo",
     "newArrival": "Nuevo"
+  },
+  "market": {
+    "featured": "Colecciones Destacadas",
+    "featuredSubtitle": "Propiedades seleccionadas para el cliente exigente.",
+    "viewAll": "Ver todas",
+    "searchResults": "Resultados de búsqueda",
+    "propertiesFound": "{{count}} propiedades encontradas que coinciden con tu búsqueda.",
+    "freshOpportunities": "Nuevas oportunidades añadidas esta semana.",
+    "all": "Todos",
+    "noProperties": "Ninguna propiedad coincide con tus filtros actuales.",
+    "loading": "Cargando...",
+    "loadMore": "Cargar más propiedades"
   }
 }
