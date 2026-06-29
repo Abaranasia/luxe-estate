@@ -58,5 +58,32 @@
     "noProperties": "Ninguna propiedad coincide con tus filtros actuales.",
     "loading": "Cargando...",
     "loadMore": "Cargar más propiedades"
+  },
+  "propertyDetail": {
+    "premium": "Premium",
+    "new": "Nuevo",
+    "features": "Características de la propiedad",
+    "squareMeters": "Metros cuadrados",
+    "bedrooms": "Dormitorios",
+    "bathrooms": "Baños",
+    "garage": "Garaje",
+    "about": "Acerca de esta casa",
+    "description": "Descubre la vida moderna de lujo en este excepcional {{type}} ubicado en {{location}}.",
+    "description2": "Con {{beds}} dormitorios espaciosos y {{baths}} elegantes baños distribuidos en {{area}} metros cuadrados, esta propiedad encarna la excelencia del diseño contemporáneo.",
+    "amenitiesTitle": "Servicios",
+    "amenitiesSmartHome": "Sistema Smart Home",
+    "amenitiesPool": "Piscina",
+    "amenitiesHVAC": "Calefacción y Aire Acondicionado Central",
+    "amenitiesEV": "Cargador para Vehículo Eléctrico",
+    "amenitiesGym": "Gimnasio Privado",
+    "amenitiesWineCellar": "Bodega",
+    "estimatedPayment": "Pago Estimado",
+    "monthlyFrom": "Desde",
+    "withDown": "con 20% inicial",
+    "calculateMortgage": "Calcular Hipoteca",
+    "topRatedAgent": "Agente Mejor Valorado",
+    "scheduleVisit": "Programar Visita",
+    "contactAgent": "Contactar Agente",
+    "mapUnavailable": "Ubicación del mapa no disponible"
   }
 }

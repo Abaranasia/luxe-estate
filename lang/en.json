@@ -58,5 +58,32 @@
     "noProperties": "No properties match your current search criteria.",
     "loading": "Loading...",
     "loadMore": "Load more properties"
+  },
+  "propertyDetail": {
+    "premium": "Premium",
+    "new": "New",
+    "features": "Property Features",
+    "squareMeters": "Square Meters",
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms",
+    "garage": "Garage",
+    "about": "About this home",
+    "description": "Discover modern luxury living in this exceptional {{type}} located in {{location}}.",
+    "description2": "Featuring {{beds}} spacious bedrooms and {{baths}} elegant bathrooms across {{area}} square meters, this property embodies contemporary design excellence.",
+    "amenitiesTitle": "Amenities",
+    "amenitiesSmartHome": "Smart Home System",
+    "amenitiesPool": "Swimming Pool",
+    "amenitiesHVAC": "Central Heating & Cooling",
+    "amenitiesEV": "Electric Vehicle Charging",
+    "amenitiesGym": "Private Gym",
+    "amenitiesWineCellar": "Wine Cellar",
+    "estimatedPayment": "Estimated Payment",
+    "monthlyFrom": "Starting from",
+    "withDown": "with 20% down",
+    "calculateMortgage": "Calculate Mortgage",
+    "topRatedAgent": "Top Rated Agent",
+    "scheduleVisit": "Schedule Visit",
+    "contactAgent": "Contact Agent",
+    "mapUnavailable": "Map location unavailable"
   }
 }

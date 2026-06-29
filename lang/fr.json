@@ -58,5 +58,32 @@
     "noProperties": "Aucune propriété ne correspond à vos filtres actuels.",
     "loading": "Chargement...",
     "loadMore": "Charger plus de propriétés"
+  },
+  "propertyDetail": {
+    "premium": "Premium",
+    "new": "Nouveau",
+    "features": "Caractéristiques de la propriété",
+    "squareMeters": "Mètres carrés",
+    "bedrooms": "Chambres",
+    "bathrooms": "Salles de bain",
+    "garage": "Garage",
+    "about": "À propos de cette maison",
+    "description": "Découvrez la vie moderne de luxe dans cet exceptional {{type}} situé à {{location}}.",
+    "description2": "Avec {{beds}} chambres spacieuses et {{baths}} salles de bain élégantes sur {{area}} mètres carrés, cette propriété incarne l'excellence du design contemporain.",
+    "amenitiesTitle": "Équipements",
+    "amenitiesSmartHome": "Système Smart Home",
+    "amenitiesPool": "Piscine",
+    "amenitiesHVAC": "Chauffage et Climatisation Central",
+    "amenitiesEV": "Chargeur Véhicule Électrique",
+    "amenitiesGym": "Salle de sport privée",
+    "amenitiesWineCellar": "Cave à vin",
+    "estimatedPayment": "Paiement Estimé",
+    "monthlyFrom": "À partir de",
+    "withDown": "avec 20% d'apport",
+    "calculateMortgage": "Calculer un prêt",
+    "topRatedAgent": "Agent le mieux noté",
+    "scheduleVisit": "Planifier une visite",
+    "contactAgent": "Contacter l'agent",
+    "mapUnavailable": "Emplacement de la carte indisponible"
   }
 }
