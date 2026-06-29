@@ -37,11 +37,14 @@ Build a premium, minimalist real estate app using **Next.js 16 (App Router)**, *
 - Dark mode support via `darkMode: "class"` (not yet wired to a toggle)
 
 #### 3. Layout Components
-- **Navbar** (`components/layout/Navbar/Navbar.tsx`): Sticky top nav with logo, links (Buy / Rent / Sell / Saved Homes), search icon, notification bell, user avatar pill. Mobile hamburger menu included.
+- **Navbar** (`components/layout/Navbar/Navbar.tsx`): Sticky top nav with logo, translated links (Buy/Rent/Sell/Saved Homes), search icon, notification bell, user avatar pill, and **LanguageSelector** for i18n. Mobile hamburger menu included.
+- **LanguageSelector** (`components/layout/LanguageSelector/LanguageSelector.tsx`): Dropdown for switching between EN/ES/FR, sets `NEXT_LOCALE` cookie.
 - **Footer**: Integrated in property detail page (`app/properties/[slug]/page.tsx`)
 
 #### 4. Property Data Layer
 - **Types** (`types/property.ts`): `Property` (UI-facing) and `PropertyRow` (Supabase row) interfaces. Includes: `id`, `title`, `location`, `price`, `beds`, `baths`, `area`, `type`, `status`, `slug`, `images`, `isExclusive`, `isNewArrival`, `featured`, `lat`, `lng`, `amenities`.
+- **I18n** (`lib/i18n.tsx`): Language provider with `useTranslation()` hook, cookie-based locale persistence (`NEXT_LOCALE`), supports EN/ES/FR with extensible architecture.
+- **Translation files** (`lang/*.json`): JSON translation files for English, Spanish, French.
 - **DB Functions** (`lib/properties.ts`):
   - `getPropertyBySlug(slug)` → `Property | null`
   - `getFeaturedProperties()` → `Property[]`
