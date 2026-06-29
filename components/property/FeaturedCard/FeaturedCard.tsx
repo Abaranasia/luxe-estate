@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { Property } from "@/types/property";
+import { useTranslation } from "@/lib/i18n";
 
 interface FeaturedCardProps {
   property: Property;
@@ -15,6 +16,7 @@ export default function FeaturedCard({
   onToggleFavorite,
 }: FeaturedCardProps) {
   const router = useRouter();
+  const { t } = useTranslation();
   const {
     title,
     location,
@@ -54,12 +56,12 @@ export default function FeaturedCard({
         {/* Badges */}
         {isExclusive && (
           <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider text-nordic-dark">
-            Exclusive
+            {t("propertyCard.exclusive")}
           </div>
         )}
         {isNewArrival && (
           <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider text-nordic-dark">
-            New Arrival
+            {t("propertyCard.newArrival")}
           </div>
         )}
 

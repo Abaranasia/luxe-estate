@@ -1,0 +1,89 @@
+{
+  "navbar": {
+    "buy": "Buy",
+    "rent": "Rent",
+    "sell": "Sell",
+    "savedHomes": "Saved Homes"
+  },
+  "search": {
+    "hero": "Find your sanctuary",
+    "placeholder": "Search by city, neighborhood, or address...",
+    "button": "Search",
+    "filters": "Filters",
+    "propertyTypes": {
+      "all": "All",
+      "house": "House",
+      "apartment": "Apartment",
+      "villa": "Villa",
+      "penthouse": "Penthouse"
+    }
+  },
+  "filters": {
+    "location": "Location",
+    "locationPlaceholder": "City, neighborhood, or address",
+    "priceRange": "Price Range",
+    "minPrice": "Min Price",
+    "maxPrice": "Max Price",
+    "noLimit": "No limit",
+    "propertyType": "Property Type",
+    "propertyTypeHint": "Property type filters are available in the search bar above.",
+    "bedroomsBathrooms": "Bedrooms & Bathrooms",
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms",
+    "any": "Any",
+    "amenities": "Amenities & Features",
+    "clearAll": "Clear all filters",
+    "apply": "Apply Filters",
+    "amenitiesSwimmingPool": "Swimming Pool",
+    "amenitiesGym": "Gym",
+    "amenitiesParking": "Parking",
+    "amenitiesAirConditioning": "Air Conditioning",
+    "amenitiesWifi": "High-speed Wifi",
+    "amenitiesDeck": "Patio / Terrace"
+  },
+  "propertyCard": {
+    "forSale": "FOR SALE",
+    "forRent": "FOR RENT",
+    "exclusive": "Exclusive",
+    "newArrival": "New Arrival"
+  },
+  "market": {
+    "featured": "Featured Collections",
+    "featuredSubtitle": "Curated properties for the discerning eye.",
+    "viewAll": "View all",
+    "searchResults": "Search Results",
+    "propertiesFound": "{{count}} properties found matching your criteria.",
+    "freshOpportunities": "Fresh opportunities added this week.",
+    "all": "All",
+    "noProperties": "No properties match your current search criteria.",
+    "loading": "Loading...",
+    "loadMore": "Load more properties"
+  },
+  "propertyDetail": {
+    "premium": "Premium",
+    "new": "New",
+    "features": "Property Features",
+    "squareMeters": "Square Meters",
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms",
+    "garage": "Garage",
+    "about": "About this home",
+    "description": "Discover modern luxury living in this exceptional {{type}} located in {{location}}.",
+    "description2": "Featuring {{beds}} spacious bedrooms and {{baths}} elegant bathrooms across {{area}} square meters, this property embodies contemporary design excellence.",
+    "amenitiesTitle": "Amenities",
+    "amenitiesSmartHome": "Smart Home System",
+    "amenitiesPool": "Swimming Pool",
+    "amenitiesHVAC": "Central Heating & Cooling",
+    "amenitiesEV": "Electric Vehicle Charging",
+    "amenitiesGym": "Private Gym",
+    "amenitiesWineCellar": "Wine Cellar",
+    "estimatedPayment": "Estimated Payment",
+    "monthlyFrom": "Starting from",
+    "withDown": "with 20% down",
+    "calculateMortgage": "Calculate Mortgage",
+    "topRatedAgent": "Top Rated Agent",
+    "scheduleVisit": "Schedule Visit",
+    "contactAgent": "Contact Agent",
+    "mapUnavailable": "Map location unavailable"
+  }
+}

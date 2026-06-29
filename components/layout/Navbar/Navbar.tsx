@@ -2,9 +2,12 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useTranslation } from "@/lib/i18n";
+import LanguageSelector from "../LanguageSelector/LanguageSelector";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <nav className="sticky top-0 z-50 bg-clear-day/95 backdrop-blur-md border-b border-nordic-dark/10">
@@ -21,30 +24,31 @@ export default function Navbar() {
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-8">
             <a className="text-mosque font-medium text-sm border-b-2 border-mosque px-1 py-1" href="#">
-              Buy
+              {t("navbar.buy")}
             </a>
             <a
               className="text-nordic-dark/70 hover:text-nordic-dark font-medium text-sm hover:border-b-2 hover:border-nordic-dark/20 px-1 py-1 transition-all"
               href="#"
             >
-              Rent
+              {t("navbar.rent")}
             </a>
             <a
               className="text-nordic-dark/70 hover:text-nordic-dark font-medium text-sm hover:border-b-2 hover:border-nordic-dark/20 px-1 py-1 transition-all"
               href="#"
             >
-              Sell
+              {t("navbar.sell")}
             </a>
             <a
               className="text-nordic-dark/70 hover:text-nordic-dark font-medium text-sm hover:border-b-2 hover:border-nordic-dark/20 px-1 py-1 transition-all"
               href="#"
             >
-              Saved Homes
+              {t("navbar.savedHomes")}
             </a>
           </div>
 
           {/* Actions */}
           <div className="flex items-center space-x-6">
+            <LanguageSelector />
             <button className="text-nordic-dark hover:text-mosque transition-colors">
               <span className="material-icons">search</span>
             </button>
@@ -83,16 +87,16 @@ export default function Navbar() {
       >
         <div className="px-4 py-2 space-y-1">
           <a className="block px-3 py-2 rounded-md text-base font-medium text-mosque bg-mosque/10" href="#">
-            Buy
+            {t("navbar.buy")}
           </a>
           <a className="block px-3 py-2 rounded-md text-base font-medium text-nordic-dark hover:bg-black/5" href="#">
-            Rent
+            {t("navbar.rent")}
           </a>
           <a className="block px-3 py-2 rounded-md text-base font-medium text-nordic-dark hover:bg-black/5" href="#">
-            Sell
+            {t("navbar.sell")}
           </a>
           <a className="block px-3 py-2 rounded-md text-base font-medium text-nordic-dark hover:bg-black/5" href="#">
-            Saved Homes
+            {t("navbar.savedHomes")}
           </a>
         </div>
       </div>

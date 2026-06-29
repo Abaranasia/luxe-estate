@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { Property } from "@/types/property";
+import { useTranslation } from "@/lib/i18n";
 
 interface PropertyCardProps {
   property: Property;
@@ -15,6 +16,7 @@ export default function PropertyCard({
   onToggleFavorite,
 }: PropertyCardProps) {
   const router = useRouter();
+  const { t } = useTranslation();
   const {
     title,
     location,
@@ -68,7 +70,7 @@ export default function PropertyCard({
         <div className={`absolute bottom-3 left-3 text-white text-xs font-bold px-2 py-1 rounded ${
           status === "sale" ? "bg-nordic-dark/90" : "bg-mosque/90"
         }`}>
-          {status === "sale" ? "FOR SALE" : "FOR RENT"}
+          {t(`propertyCard.${status === "sale" ? "forSale" : "forRent"}`)}
         </div>
       </div>
 

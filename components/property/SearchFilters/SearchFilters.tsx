@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslation } from "@/lib/i18n";
+
 interface SearchFiltersProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
@@ -8,6 +10,14 @@ interface SearchFiltersProps {
   onOpenFilters?: () => void;
 }
 
+const propertyTypes = [
+  { value: "all", label: "all" },
+  { value: "house", label: "house" },
+  { value: "apartment", label: "apartment" },
+  { value: "villa", label: "villa" },
+  { value: "penthouse", label: "penthouse" },
+];
+
 export default function SearchFilters({
   searchQuery,
   setSearchQuery,
@@ -15,24 +25,13 @@ export default function SearchFilters({
   setSelectedType,
   onOpenFilters,
 }: SearchFiltersProps) {
-  const propertyTypes = [
-    { value: "all", label: "All" },
-    { value: "house", label: "House" },
-    { value: "apartment", label: "Apartment" },
-    { value: "villa", label: "Villa" },
-    { value: "penthouse", label: "Penthouse" },
-  ];
+  const { t } = useTranslation();
 
   return (
     <section className="py-12 md:py-16">
       <div className="max-w-3xl mx-auto text-center space-y-8">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-nordic-dark leading-tight">
-          Find your{" "}
-          <span className="relative inline-block">
-            <span className="relative z-10 font-medium">sanctuary</span>
-            <span className="absolute bottom-2 left-0 w-full h-3 bg-mosque/20 -rotate-1 z-0"></span>
-          </span>
-          .
+          {t("search.hero")}
         </h1>
 
         {/* Search input */}
@@ -47,10 +46,10 @@ export default function SearchFilters({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="block w-full pl-12 pr-4 py-4 rounded-xl border-none bg-white text-nordic-dark shadow-soft placeholder-nordic-muted/60 focus:ring-2 focus:ring-mosque focus:bg-white outline-none transition-all text-lg"
-            placeholder="Search by city, neighborhood, or address..."
+            placeholder={t("search.placeholder")}
           />
           <button className="absolute inset-y-2 right-2 px-6 bg-mosque hover:bg-mosque/90 text-white font-medium rounded-lg transition-colors flex items-center justify-center shadow-lg shadow-mosque/20">
-            Search
+            {t("search.button")}
           </button>
         </div>
 
@@ -68,7 +67,7 @@ export default function SearchFilters({
                     : "bg-white border border-nordic-dark/5 text-nordic-muted hover:text-nordic-dark hover:border-mosque/50 hover:bg-mosque/5"
                 }`}
               >
-                {type.label}
+                {t(`search.propertyTypes.${type.label}`)}
               </button>
             );
           })}
@@ -79,7 +78,7 @@ export default function SearchFilters({
             onClick={onOpenFilters}
             className="whitespace-nowrap flex items-center gap-1 px-4 py-2 rounded-full text-nordic-dark font-medium text-sm hover:bg-black/5 transition-colors"
           >
-            <span className="material-icons text-base">tune</span> Filters
+            <span className="material-icons text-base">tune</span> {t("search.filters")}
           </button>
         </div>
       </div>
