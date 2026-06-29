@@ -3,6 +3,12 @@
 import { useState, useRef, useEffect } from "react";
 import { useTranslation, availableLocales } from "@/lib/i18n";
 
+const FLAG_MAP: Record<string, string> = {
+  en: String.fromCodePoint(0x1F1EC, 0x1F1E7),
+  es: String.fromCodePoint(0x1F1EA, 0x1F1F8),
+  fr: String.fromCodePoint(0x1F1EB, 0x1F1F7),
+};
+
 export default function LanguageSelector() {
   const [isOpen, setIsOpen] = useState(false);
   const { locale, setLocale } = useTranslation();
@@ -17,8 +23,6 @@ export default function LanguageSelector() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
-  const currentLocale = availableLocales.find((l) => l.code === locale);
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -39,7 +43,7 @@ export default function LanguageSelector() {
                 setLocale(l.code);
                 setIsOpen(false);
               }}
-              className={`w-full text-left px-4 py-2 text-sm font-medium ${
+              className={`w-full text-left px-4 py-2 text-sm font-medium flex items-center gap-2 ${
                 locale === l.code
                   ? "text-mosque bg-mosque/5"
                   : "text-nordic-dark hover:bg-clear-day"
@@ -49,7 +53,7 @@ export default function LanguageSelector() {
                 l.code === availableLocales[availableLocales.length - 1].code ? "rounded-b-lg" : ""
               }`}
             >
-              {l.label}
+              <span className="emoji-font">{FLAG_MAP[l.code]}</span> {l.label}
             </button>
           ))}
         </div>
