@@ -5,6 +5,10 @@
     "sell": "Vender",
     "savedHomes": "Casas guardadas"
   },
+  "auth": {
+    "signIn": "Iniciar sesión",
+    "signOut": "Cerrar sesión"
+  },
   "search": {
     "hero": "Encuentra tu santuario",
     "placeholder": "Buscar por ciudad, barrio o dirección...",
