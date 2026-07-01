@@ -3,7 +3,8 @@
     "buy": "Acheter",
     "rent": "Louer",
     "sell": "Vendre",
-    "savedHomes": "Maisons sauvegardées"
+    "savedHomes": "Maisons sauvegardées",
+    "admin": "Admin"
   },
   "auth": {
     "signIn": "Se connecter",

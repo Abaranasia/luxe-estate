@@ -11,19 +11,34 @@ import type { User } from "@supabase/supabase-js";
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
 
+  const fetchRole = async (userId: string) => {
+    const { data } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", userId)
+      .single();
+    setIsAdmin(data?.role === "admin");
+  };
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
+      const u = session?.user ?? null;
+      setUser(u);
+      if (u) fetchRole(u.id);
     });
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_, session) => {
-      setUser(session?.user ?? null);
+      const u = session?.user ?? null;
+      setUser(u);
+      if (u) fetchRole(u.id);
+      else setIsAdmin(false);
     });
 
     return () => subscription.unsubscribe();
@@ -126,6 +141,16 @@ export default function Navbar() {
                         <p className="text-xs font-medium text-nordic-dark truncate">{displayName}</p>
                         <p className="text-xs text-gray-400 truncate">{user.email}</p>
                       </div>
+                    )}
+                    {isAdmin && (
+                      <Link
+                        href="/admin"
+                        onClick={() => setIsProfileOpen(false)}
+                        className="w-full text-left px-4 py-2 text-sm text-nordic-dark hover:bg-mosque/5 hover:text-mosque transition-colors flex items-center gap-2"
+                      >
+                        <span className="material-icons text-base">admin_panel_settings</span>
+                        {t("navbar.admin")}
+                      </Link>
                     )}
                     <button
                       onClick={handleSignOut}
