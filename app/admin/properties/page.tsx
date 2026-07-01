@@ -1,6 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 import { getAllProperties } from "@/lib/admin";
 import type { Property } from "@/types/property";
+
+const PAGE_SIZE = 10;
 
 const TYPE_COLORS: Record<Property["type"], string> = {
   house: "bg-blue-100 text-blue-700",
@@ -9,8 +12,15 @@ const TYPE_COLORS: Record<Property["type"], string> = {
   penthouse: "bg-pink-100 text-pink-700",
 };
 
-export default async function AdminPropertiesPage() {
-  const properties = await getAllProperties();
+export default async function AdminPropertiesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const { page: pageParam } = await searchParams;
+  const page = Math.max(1, parseInt(pageParam ?? "1", 10) || 1);
+  const { data: properties, total } = await getAllProperties(page, PAGE_SIZE);
+  const totalPages = Math.ceil(total / PAGE_SIZE);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -19,7 +29,7 @@ export default async function AdminPropertiesPage() {
           Properties
         </h1>
         <p className="text-nordic-dark/60 mt-1 text-sm">
-          {properties.length} properties in the catalogue.
+          {total} properties in the catalogue.
         </p>
       </div>
 
@@ -38,6 +48,45 @@ export default async function AdminPropertiesPage() {
           <PropertyRow key={property.id} property={property} />
         ))}
       </div>
+
+      {totalPages > 1 && (
+        <div className="mt-8 flex items-center justify-center gap-4">
+          {page > 1 ? (
+            <Link
+              href={`?page=${page - 1}`}
+              className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-nordic-dark bg-white border border-gray-200 rounded-lg hover:bg-hint-of-green/40 transition-colors"
+            >
+              <span className="material-icons text-base">chevron_left</span>
+              Previous
+            </Link>
+          ) : (
+            <span className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-nordic-dark/30 bg-white border border-gray-100 rounded-lg cursor-not-allowed select-none">
+              <span className="material-icons text-base">chevron_left</span>
+              Previous
+            </span>
+          )}
+
+          <span className="text-sm text-nordic-dark/60">
+            Page <span className="font-semibold text-nordic-dark">{page}</span> of{" "}
+            <span className="font-semibold text-nordic-dark">{totalPages}</span>
+          </span>
+
+          {page < totalPages ? (
+            <Link
+              href={`?page=${page + 1}`}
+              className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-nordic-dark bg-white border border-gray-200 rounded-lg hover:bg-hint-of-green/40 transition-colors"
+            >
+              Next
+              <span className="material-icons text-base">chevron_right</span>
+            </Link>
+          ) : (
+            <span className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-nordic-dark/30 bg-white border border-gray-100 rounded-lg cursor-not-allowed select-none">
+              Next
+              <span className="material-icons text-base">chevron_right</span>
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 }

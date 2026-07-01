@@ -47,15 +47,22 @@ export async function getAllProfiles(): Promise<Profile[]> {
   return data as Profile[];
 }
 
-export async function getAllProperties(): Promise<Property[]> {
+export async function getAllProperties(
+  page = 1,
+  pageSize = 10
+): Promise<{ data: Property[]; total: number }> {
   const supabase = await createSupabaseServer();
-  const { data, error } = await supabase
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+
+  const { data, error, count } = await supabase
     .from("properties")
-    .select("*")
-    .order("created_at", { ascending: false });
+    .select("*", { count: "exact" })
+    .order("created_at", { ascending: false })
+    .range(from, to);
 
   if (error) throw error;
-  return (data as PropertyRow[]).map(toProperty);
+  return { data: (data as PropertyRow[]).map(toProperty), total: count ?? 0 };
 }
 
 export async function getAdminStats(): Promise<AdminStats> {
