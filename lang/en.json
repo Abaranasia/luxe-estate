@@ -3,11 +3,21 @@
     "buy": "Buy",
     "rent": "Rent",
     "sell": "Sell",
-    "savedHomes": "Saved Homes"
+    "savedHomes": "Saved Homes",
+    "admin": "Admin"
   },
   "auth": {
     "signIn": "Sign In",
     "signOut": "Sign Out"
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "properties": "Properties",
+    "users": "Users",
+    "changeRole": "Change Role",
+    "totalProperties": "Total Properties",
+    "totalUsers": "Total Users",
+    "usersByRole": "Users by Role"
   },
   "search": {
     "hero": "Find your sanctuary",

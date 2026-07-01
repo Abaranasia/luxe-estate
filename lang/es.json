@@ -3,11 +3,21 @@
     "buy": "Comprar",
     "rent": "Alquilar",
     "sell": "Vender",
-    "savedHomes": "Casas guardadas"
+    "savedHomes": "Casas guardadas",
+    "admin": "Administración"
   },
   "auth": {
     "signIn": "Iniciar sesión",
     "signOut": "Cerrar sesión"
+  },
+  "admin": {
+    "dashboard": "Panel de control",
+    "properties": "Propiedades",
+    "users": "Usuarios",
+    "changeRole": "Cambiar rol",
+    "totalProperties": "Total de propiedades",
+    "totalUsers": "Total de usuarios",
+    "usersByRole": "Usuarios por rol"
   },
   "search": {
     "hero": "Encuentra tu santuario",
