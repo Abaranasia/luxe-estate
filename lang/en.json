@@ -9,6 +9,15 @@
     "signIn": "Sign In",
     "signOut": "Sign Out"
   },
+  "admin": {
+    "dashboard": "Dashboard",
+    "properties": "Properties",
+    "users": "Users",
+    "changeRole": "Change Role",
+    "totalProperties": "Total Properties",
+    "totalUsers": "Total Users",
+    "usersByRole": "Users by Role"
+  },
   "search": {
     "hero": "Find your sanctuary",
     "placeholder": "Search by city, neighborhood, or address...",

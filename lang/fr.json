@@ -9,6 +9,15 @@
     "signIn": "Se connecter",
     "signOut": "Se déconnecter"
   },
+  "admin": {
+    "dashboard": "Tableau de bord",
+    "properties": "Propriétés",
+    "users": "Utilisateurs",
+    "changeRole": "Changer le rôle",
+    "totalProperties": "Total des propriétés",
+    "totalUsers": "Total des utilisateurs",
+    "usersByRole": "Utilisateurs par rôle"
+  },
   "search": {
     "hero": "Trouvez votre sanctuaire",
     "placeholder": "Rechercher par ville, quartier ou adresse...",

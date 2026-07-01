@@ -26,7 +26,14 @@ export async function proxy(request: NextRequest) {
   );
 
   // Refreshes the session cookie if it has expired
-  await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  // Protect /admin routes: redirect unauthenticated visitors to /login.
+  // Role verification (admin-only) is done in app/admin/layout.tsx.
+  if (request.nextUrl.pathname.startsWith("/admin") && !user) {
+    return NextResponse.redirect(new URL("/login", request.nextUrl));
+  }
 
   return supabaseResponse;
 }

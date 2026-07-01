@@ -9,6 +9,15 @@
     "signIn": "Iniciar sesión",
     "signOut": "Cerrar sesión"
   },
+  "admin": {
+    "dashboard": "Panel de control",
+    "properties": "Propiedades",
+    "users": "Usuarios",
+    "changeRole": "Cambiar rol",
+    "totalProperties": "Total de propiedades",
+    "totalUsers": "Total de usuarios",
+    "usersByRole": "Usuarios por rol"
+  },
   "search": {
     "hero": "Encuentra tu santuario",
     "placeholder": "Buscar por ciudad, barrio o dirección...",
