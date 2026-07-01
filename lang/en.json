@@ -5,6 +5,10 @@
     "sell": "Sell",
     "savedHomes": "Saved Homes"
   },
+  "auth": {
+    "signIn": "Sign In",
+    "signOut": "Sign Out"
+  },
   "search": {
     "hero": "Find your sanctuary",
     "placeholder": "Search by city, neighborhood, or address...",
