@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getAllProperties } from "@/lib/admin";
 import type { Property } from "@/types/property";
+import DeletePropertyButton from "@/components/admin/DeletePropertyButton";
 
 const PAGE_SIZE = 10;
 
@@ -24,23 +25,33 @@ export default async function AdminPropertiesPage({
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight text-nordic-dark">
-          Properties
-        </h1>
-        <p className="text-nordic-dark/60 mt-1 text-sm">
-          {total} properties in the catalogue.
-        </p>
+      <div className="mb-8 flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-nordic-dark">
+            Properties
+          </h1>
+          <p className="text-nordic-dark/60 mt-1 text-sm">
+            {total} properties in the catalogue.
+          </p>
+        </div>
+        <Link
+          href="/admin/properties/new"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-mosque hover:bg-nordic-dark text-white font-medium text-sm shadow-sm hover:shadow-md transition-all duration-200 whitespace-nowrap"
+        >
+          <span className="material-icons text-base">add</span>
+          Add New Property
+        </Link>
       </div>
 
       {/* Column headers — desktop only */}
       <div className="hidden md:grid grid-cols-12 gap-4 px-5 mb-2 text-xs font-semibold uppercase tracking-wider text-nordic-dark/50">
         <div className="col-span-1" />
-        <div className="col-span-4">Title &amp; Location</div>
+        <div className="col-span-3">Title &amp; Location</div>
         <div className="col-span-2">Type</div>
         <div className="col-span-2">Status</div>
         <div className="col-span-2">Price</div>
         <div className="col-span-1">Beds / Baths</div>
+        <div className="col-span-1 text-right">Actions</div>
       </div>
 
       <div className="space-y-3">
@@ -118,7 +129,7 @@ function PropertyRow({ property }: { property: Property }) {
       </div>
 
       {/* Title + location */}
-      <div className="col-span-4 overflow-hidden w-full">
+      <div className="col-span-3 overflow-hidden w-full">
         <p className="text-sm font-bold text-nordic-dark truncate">
           {property.title}
         </p>
@@ -169,6 +180,18 @@ function PropertyRow({ property }: { property: Property }) {
             bathroom
           </span>
         </p>
+      </div>
+
+      {/* Actions */}
+      <div className="col-span-1 flex items-center justify-end gap-1 w-full">
+        <Link
+          href={`/admin/properties/${property.id}/edit`}
+          className="p-1.5 rounded-md text-nordic-dark/50 hover:text-mosque hover:bg-mosque/10 transition-colors"
+          title="Edit"
+        >
+          <span className="material-icons text-base">edit</span>
+        </Link>
+        <DeletePropertyButton id={property.id} />
       </div>
     </div>
   );

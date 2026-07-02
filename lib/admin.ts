@@ -47,6 +47,18 @@ export async function getAllProfiles(): Promise<Profile[]> {
   return data as Profile[];
 }
 
+export async function getPropertyById(id: string): Promise<Property | null> {
+  const supabase = await createSupabaseServer();
+  const { data } = await supabase
+    .from("properties")
+    .select("*")
+    .eq("id", id)
+    .eq("is_deleted", false)
+    .single();
+
+  return data ? toProperty(data as PropertyRow) : null;
+}
+
 export async function getAllProperties(
   page = 1,
   pageSize = 10
@@ -58,6 +70,7 @@ export async function getAllProperties(
   const { data, error, count } = await supabase
     .from("properties")
     .select("*", { count: "exact" })
+    .eq("is_deleted", false)
     .order("created_at", { ascending: false })
     .range(from, to);
 
@@ -71,7 +84,8 @@ export async function getAdminStats(): Promise<AdminStats> {
   const [propertiesResult, profilesResult] = await Promise.all([
     supabase
       .from("properties")
-      .select("id", { count: "exact", head: true }),
+      .select("id", { count: "exact", head: true })
+      .eq("is_deleted", false),
     supabase.from("profiles").select("role"),
   ]);
 
