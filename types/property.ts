@@ -10,6 +10,9 @@ export interface Property {
   status: 'sale' | 'rent';
   slug: string;
   images: string[];
+  description?: string;
+  yearBuilt?: number;
+  garage?: number;
   isExclusive?: boolean;
   isNewArrival?: boolean;
   featured?: boolean; // True if it should be displayed in the Featured Collections section
@@ -31,9 +34,13 @@ export interface PropertyRow {
   status: 'sale' | 'rent';
   slug: string;
   images: string[];
+  description?: string;
+  year_built?: number;
+  garage?: number;
   is_exclusive: boolean;
   is_new_arrival: boolean;
   featured: boolean;
+  is_deleted: boolean;
   lat?: number;
   lng?: number;
   amenities?: string[];
@@ -54,6 +61,9 @@ export function toProperty(row: PropertyRow): Property {
     status: row.status,
     slug: row.slug,
     images: row.images,
+    description: row.description,
+    yearBuilt: row.year_built,
+    garage: row.garage,
     isExclusive: row.is_exclusive || undefined,
     isNewArrival: row.is_new_arrival || undefined,
     featured: row.featured || undefined,
