@@ -9,10 +9,11 @@ export async function getPropertyBySlug(slug: string): Promise<Property | null> 
     .from("properties")
     .select("*")
     .eq("slug", slug)
+    .eq("is_deleted", false)
     .single();
 
   if (error || !data) {
-    console.error("Error fetching property by slug:", error);
+    console.error("Error fetching property by slug:", error?.message ?? error);
     return null;
   }
 
@@ -27,6 +28,7 @@ export async function getFeaturedProperties(): Promise<Property[]> {
     .from("properties")
     .select("*")
     .eq("featured", true)
+    .eq("is_deleted", false)
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -81,6 +83,7 @@ export async function getMarketProperties(
     .from("properties")
     .select("*", { count: "exact" })
     .eq("featured", false)
+    .eq("is_deleted", false)
     .order("created_at", { ascending: false });
 
   // Filter by property type
